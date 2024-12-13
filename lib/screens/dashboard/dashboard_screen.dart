@@ -100,7 +100,7 @@ class DashboardScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 4.0),
-                            Text('\$Price',
+                            Text('\Price',
                                 style: TextStyle(color: Colors.green)),
                           ],
                         ),
