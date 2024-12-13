@@ -94,7 +94,7 @@ class DashboardScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Product Title',
+                              'Product',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
