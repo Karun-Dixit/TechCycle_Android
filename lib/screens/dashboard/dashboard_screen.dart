@@ -15,7 +15,7 @@ class DashboardScreen extends StatelessWidget {
               const SizedBox(width: 4.0),
               Text(
                 "Kathmandu", // Example location
-                style: TextStyle(color: Colors.black, fontSize: 16.0),
+                style: TextStyle(color: Colors.black, fontSize: 15.0),
               ),
               Spacer(),
               IconButton(
