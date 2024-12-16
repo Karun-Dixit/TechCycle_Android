@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sprint1/screens/login/login_screen.dart';
+import 'package:sprint1/screens/onboarding/onboarding_screen.dart'; // Import the OnboardingScreen
 
 class SplashScreenView extends StatefulWidget {
   const SplashScreenView({super.key});
@@ -14,11 +14,11 @@ class _SplashScreenViewState extends State<SplashScreenView> {
   @override
   void initState() {
     super.initState();
-    // Navigate to Login Screen after 3 seconds
+    // Navigate to Onboarding Screen after 3 seconds
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        MaterialPageRoute(builder: (context) => const OnboardingScreen()),
       );
     });
   }
@@ -27,7 +27,9 @@ class _SplashScreenViewState extends State<SplashScreenView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(child: Image.asset('assets/images/logo.png')),
+      body: Center(
+        child: Image.asset('assets/images/logo.png'), // Logo for Splash Screen
+      ),
     );
   }
 }

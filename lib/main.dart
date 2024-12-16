@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sprint1/screens/dashboard/dashboard_screen.dart';
+import 'package:sprint1/screens/login/login_screen.dart';
+import 'package:sprint1/screens/onboarding/onboarding_screen.dart';
 import 'package:sprint1/screens/signup/signup_screen.dart';
 import 'package:sprint1/screens/splash/splash_screen.dart';
 
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: DashboardScreen(),
+      home: SplashScreenView(),
     );
   }
 }
