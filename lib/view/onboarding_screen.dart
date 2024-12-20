@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sprint1/screens/login/login_screen.dart'; // Import LoginScreen
+import 'package:sprint1/view/login_screen.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -67,7 +67,8 @@ class _OnboardingPagesState extends State<OnboardingPages> {
             ),
             // Page Indicator and Next Button
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -91,7 +92,8 @@ class _OnboardingPagesState extends State<OnboardingPages> {
                         // Navigate to Login Page
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => const LoginScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
                         );
                       }
                     },
@@ -173,7 +175,7 @@ class OnboardingPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min, // Centers vertically
               children: [
                 // Image - Adjusted size
-                Container(
+                SizedBox(
                   width: 220, // Adjust width
                   height: 220, // Adjust height
                   child: Image.asset(

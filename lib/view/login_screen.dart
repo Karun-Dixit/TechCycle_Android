@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sprint1/screens/dashboard/dashboard_screen.dart';
-import 'package:sprint1/screens/signup/signup_screen.dart';
-
+import 'package:sprint1/view/dashboard_screen.dart';
+import 'package:sprint1/view/signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -11,10 +10,10 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Log In"),
+        title: const Text("Log In"),
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -76,7 +75,8 @@ class LoginScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => DashboardScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => const DashboardScreen()),
                           );
                         },
                         child: const Text("Log in"),
@@ -91,7 +91,8 @@ class LoginScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SignUpScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => const SignUpScreen()),
                           );
                         },
                         child: const Text("Sign up"),

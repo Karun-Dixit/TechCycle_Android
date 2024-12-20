@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sprint1/screens/login/login_screen.dart';
+import 'package:sprint1/view/login_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -20,16 +20,18 @@ class SignUpScreen extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0, vertical: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Let’s get started!",
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
+                      style:
+                          Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
                     ),
                     const SizedBox(height: 12.0),
                     const Text(
@@ -46,7 +48,7 @@ class SignUpScreen extends StatelessWidget {
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.2),
                             blurRadius: 6.0,
-                            offset: Offset(0, 2),
+                            offset: const Offset(0, 2),
                           ),
                         ],
                       ),
@@ -83,24 +85,24 @@ class SignUpScreen extends StatelessWidget {
                           onChanged: (value) {},
                           value: false,
                         ),
-                        Expanded(
+                        const Expanded(
                           child: Text.rich(
                             TextSpan(
                               text: "I agree with the",
                               children: [
                                 TextSpan(
                                   text: " Terms of service ",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.blue,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                const TextSpan(
+                                TextSpan(
                                   text: "& privacy policy.",
                                 ),
                               ],
                             ),
-                            style: const TextStyle(color: Colors.black87),
+                            style: TextStyle(color: Colors.black87),
                           ),
                         )
                       ],
@@ -119,27 +121,33 @@ class SignUpScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => const LoginScreen()),
                           );
                         },
-                        child: const Text("Continue", style: TextStyle(fontSize: 18.0)),
+                        child: const Text("Continue",
+                            style: TextStyle(fontSize: 18.0)),
                       ),
                     ),
                     const SizedBox(height: 16.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Do you have an account?", style: TextStyle(color: Colors.black87)),
+                        const Text("Do you have an account?",
+                            style: TextStyle(color: Colors.black87)),
                         TextButton(
                           onPressed: () {
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()),
                             );
                           },
                           child: const Text(
                             "Log in",
-                            style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontWeight: FontWeight.w600),
                           ),
                         )
                       ],
