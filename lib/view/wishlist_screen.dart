@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'dashboard_screen.dart'; // Import the Dashboard screen
+import 'package:sprint1/view/dashboard_screen.dart';
+import 'package:sprint1/view/profile_screeen.dart';
 
 class WishlistScreen extends StatefulWidget {
   const WishlistScreen({super.key});
@@ -21,19 +21,23 @@ class _WishlistScreenState extends State<WishlistScreen> {
     // Navigate to respective screen based on selected tab
     switch (index) {
       case 0:
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  const DashboardScreen()), // Navigate to Dashboard when Home is selected
+            builder: (context) =>
+                const DashboardScreen(), // Navigate to Dashboard when Home is selected
+          ),
         );
         break;
       case 1:
         // Stay on Wishlist (no action needed)
         break;
       case 2:
-        // Navigate to Account screen (add the appropriate screen later)
-        // Navigator.pushNamed(context, '/account');
+        // Navigate to Profile screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ProfileScreen()),
+        );
         break;
     }
   }
@@ -83,7 +87,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  '52,082+ Items', // Replace with dynamic count
+                  '100+ Items', // Replace with dynamic count
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Row(
@@ -157,7 +161,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                               ),
                               SizedBox(height: 4.0),
                               Text(
-                                '₹499', // Replace with dynamic product price
+                                'Rs 499', // Replace with dynamic product price
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.green,

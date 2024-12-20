@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sprint1/view/wishlist_screen.dart';
+import 'package:sprint1/view/dashboard_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: WishlistScreen(),
+      home: DashboardScreen(),
     );
   }
 }

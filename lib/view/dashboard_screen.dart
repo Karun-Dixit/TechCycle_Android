@@ -160,7 +160,7 @@ class DashboardScreenContent extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "BEST DEALS\nON EARPODS",
+                          "BEST DEALS\nON LAPTOPS",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
