@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'wishlist_screen.dart'; // Import the existing WishlistScreen
+import 'package:sprint1/view/profile_screeen.dart';
+import 'package:sprint1/view/wishlist_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -15,8 +15,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   // List of screens, you can add more screens if needed
   final List<Widget> _screens = [
     const DashboardScreenContent(), // Dashboard content screen
-    // WishlistScreen will be opened on tab press, no need to add here
-    // Add other screens like Account etc.
   ];
 
   // Handle tab change
@@ -28,9 +26,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (index == 1) {
       Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) =>
-                const WishlistScreen()), // Navigate to your existing WishlistScreen
+        MaterialPageRoute(builder: (context) => const WishlistScreen()),
+      );
+    }
+    // Navigate to ProfileScreen when the Account tab is selected
+    else if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfileScreen()),
       );
     }
   }
