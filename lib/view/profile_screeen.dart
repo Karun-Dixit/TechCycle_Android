@@ -24,35 +24,62 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Example Profile Content
-            const CircleAvatar(
-              radius: 50,
-              backgroundImage:
-                  AssetImage('assets/images/profile.png'), // Profile image
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'John Doe', // User name
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'john.doe@example.com', // User email
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // You can add profile editing functionality here
-              },
-              child: const Text('Edit Profile'),
-            ),
-          ],
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Profile Picture
+              const CircleAvatar(
+                radius: 60,
+                backgroundImage:
+                    AssetImage('assets/images/acc.png'), // Profile image
+              ),
+              const SizedBox(height: 16),
+
+              // Username
+              const Text(
+                'Karun', // User name
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 8),
+
+              // User Email
+              const Text(
+                'karun@gmail.com', // User email
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Edit Profile Button
+              ElevatedButton(
+                onPressed: () {
+                  // You can add profile editing functionality here
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                ),
+                child: const Text(
+                  'Edit Profile',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       // Bottom Navigation Bar with navigation functionality
