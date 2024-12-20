@@ -110,6 +110,9 @@ class DashboardScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get the screen width
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,18 +124,16 @@ class DashboardScreenContent extends StatelessWidget {
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search, color: Colors.grey),
                 hintText: 'Search here...',
-                hintStyle: TextStyle(
-                    color: Colors.grey[500]), // Lighter hint text color
+                hintStyle: TextStyle(color: Colors.grey[500]),
                 filled: true,
-                fillColor: Colors.grey[200], // Lighter background color
+                fillColor: Colors.grey[200],
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide.none, // Remove border
+                  borderSide: BorderSide.none,
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(
-                      color: Colors.grey[400]!), // Lighter focused border
+                  borderSide: BorderSide(color: Colors.grey[400]!),
                 ),
               ),
             ),
@@ -171,7 +172,7 @@ class DashboardScreenContent extends StatelessWidget {
                   ),
                   const Spacer(),
                   Image.asset(
-                    'assets/images/earpods.png', // Replace with actual image
+                    'assets/images/laptop.png', // Replace with actual image
                     height: 80,
                   ),
                 ],
@@ -181,25 +182,34 @@ class DashboardScreenContent extends StatelessWidget {
           const SizedBox(height: 20),
 
           // Category Section
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              "Category",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-          const SizedBox(height: 10),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Align(
+              alignment: Alignment.center, // Centers the category section
+              child: Column(
                 children: [
-                  _buildCategoryIcon(Icons.phone_android, "Phones"),
-                  _buildCategoryIcon(Icons.videogame_asset, "Consoles"),
-                  _buildCategoryIcon(Icons.headphones, "Headphones"),
-                  _buildCategoryIcon(Icons.tv, "Monitors"),
-                  _buildCategoryIcon(Icons.apps, "All"),
+                  const Text(
+                    "Category",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.center, // Centers icons
+                        children: [
+                          _buildCategoryIcon(Icons.phone_android, "Phones"),
+                          _buildCategoryIcon(Icons.videogame_asset, "Consoles"),
+                          _buildCategoryIcon(Icons.headphones, "Headphones"),
+                          _buildCategoryIcon(Icons.tv, "Monitors"),
+                          _buildCategoryIcon(Icons.apps, "All"),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -215,56 +225,67 @@ class DashboardScreenContent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 8.0,
-              mainAxisSpacing: 8.0,
-              childAspectRatio: 0.8,
-            ),
-            itemCount: 10, // Replace with dynamic count from your data
-            itemBuilder: (context, index) {
-              return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+
+          // GridView adjusted for tablet and phone layout
+          LayoutBuilder(
+            builder: (context, constraints) {
+              // Determine the number of columns based on the screen size
+              int crossAxisCount = screenWidth > 600
+                  ? 4
+                  : 2; // 4 columns for tablets and 2 for phones
+
+              return GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 8.0,
+                  childAspectRatio: 0.8,
                 ),
-                elevation: 4.0,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(8.0)),
-                        child: Image.asset(
-                          "assets/images/laptop.png", // Replace with actual image
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                        ),
-                      ),
+                itemCount: 10, // Replace with dynamic count from your data
+                itemBuilder: (context, index) {
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Product Name',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                    elevation: 4.0,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(8.0)),
+                            child: Image.asset(
+                              "assets/images/laptop.png", // Replace with actual image
+                              fit: BoxFit.cover,
+                              width: double.infinity,
                             ),
                           ),
-                          SizedBox(height: 4.0),
-                          Text('Rs. 12,000',
-                              style: TextStyle(color: Colors.green)),
-                        ],
-                      ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Product Name',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 4.0),
+                              Text('Rs. 12,000',
+                                  style: TextStyle(color: Colors.green)),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               );
             },
           ),
