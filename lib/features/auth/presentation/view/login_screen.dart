@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sprint1/features/auth/presentation/view/signup_screen.dart';
 import 'package:sprint1/view/dashboard_screen.dart';
-import 'package:sprint1/view/signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
