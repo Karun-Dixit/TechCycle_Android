@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:sprint1/view/dashboard_screen.dart';
+import 'package:sprint1/app/app.dart';
+import 'package:sprint1/app/di/di.dart';
+import 'package:sprint1/core/network/hive_service.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await HiveService.init();
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  // await HiveService().clearStudentBox();
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: DashboardScreen(),
-    );
-  }
+  await initDependencies();
+
+  runApp(
+    const App(),
+  );
 }
