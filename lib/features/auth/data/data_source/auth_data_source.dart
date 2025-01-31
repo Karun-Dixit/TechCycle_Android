@@ -3,7 +3,7 @@ import 'dart:io';
 import '../../domain/entity/auth_entity.dart';
 
 abstract interface class IAuthDataSource {
-  Future<String> logincustomer(String username, String password);
+  Future<String> logincustomer(String email, String password);
 
   Future<void> registercustomer(AuthEntity customer);
 
