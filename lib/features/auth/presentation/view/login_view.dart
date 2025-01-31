@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sprint1/features/auth/presentation/view/register_view.dart';
+import 'package:sprint1/features/auth/presentation/view/test.dart';
 
 import '../view_model/login/login_bloc.dart';
 
@@ -8,7 +8,8 @@ class LoginView extends StatelessWidget {
   LoginView({super.key});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController =
+      TextEditingController(); // Updated to email
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -54,19 +55,24 @@ class LoginView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  // Username Field
+                  // Email Field (Replaced Username with Email)
                   TextFormField(
-                    controller: _usernameController,
+                    controller: _emailController, // Updated controller
                     decoration: InputDecoration(
-                      labelText: "Username",
-                      prefixIcon: const Icon(Icons.perm_identity_rounded),
+                      labelText: "Email", // Updated label
+                      prefixIcon:
+                          const Icon(Icons.email_outlined), // Updated icon
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Please enter your username";
+                        return "Please enter your email"; // Updated validation message
+                      }
+                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                          .hasMatch(value)) {
+                        return "Please enter a valid email"; // Added email format validation
                       }
                       return null;
                     },
@@ -129,7 +135,8 @@ class LoginView extends StatelessWidget {
                           context.read<LoginBloc>().add(
                                 LogincustomerEvent(
                                   context: context,
-                                  username: _usernameController.text,
+                                  email:
+                                      _emailController.text, // Updated to email
                                   password: _passwordController.text,
                                 ),
                               );
