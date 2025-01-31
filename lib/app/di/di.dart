@@ -1,4 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sprint1/core/network/api_service.dart';
+import 'package:sprint1/features/auth/data/data_source/auth_remote_datasource/auth_remote_datasource.dart';
+import 'package:sprint1/features/auth/data/repository/auth_remote_repository.dart';
+import 'package:sprint1/features/auth/domain/use_case/upload_image_usecase.dart';
+
+// import 'package:sprint1/features/auth/domain/use_case/upload_image_usecase.dart';
 
 import '../../core/network/hive_service.dart';
 import '../../features/auth/data/data_source/auth_local_datasource/auth_local_datasource.dart';
@@ -14,6 +21,7 @@ final getIt = GetIt.instance;
 Future<void> initDependencies() async {
   // First initialize hive service
   await _initHiveService();
+  await _initApiService();
 
   await _initHomeDependencies();
   await _initRegisterDependencies();
@@ -26,10 +34,21 @@ _initHiveService() {
   getIt.registerLazySingleton<HiveService>(() => HiveService());
 }
 
+_initApiService() {
+  // Remote Data Source
+  getIt.registerLazySingleton<Dio>(
+    () => ApiService(Dio()).dio,
+  );
+}
+
 _initRegisterDependencies() {
   // init local data source
   getIt.registerLazySingleton(
     () => AuthLocalDataSource(getIt<HiveService>()),
+  );
+
+  getIt.registerLazySingleton<AuthRemoteDataSource>(
+    () => AuthRemoteDataSource(getIt<Dio>()),
   );
 
   // init local repository
@@ -37,16 +56,27 @@ _initRegisterDependencies() {
     () => AuthLocalRepository(getIt<AuthLocalDataSource>()),
   );
 
+  getIt.registerLazySingleton<AuthRemoteRepository>(
+    () => AuthRemoteRepository(getIt<AuthRemoteDataSource>()),
+  );
+
   // register use usecase
+  // getIt.registerLazySingleton<RegisterUseCase>(
+  //   () => RegisterUseCase(
+  //     getIt<AuthLocalRepository>(),
+  //   ),
+  // );
+
   getIt.registerLazySingleton<RegisterUseCase>(
     () => RegisterUseCase(
-      getIt<AuthLocalRepository>(),
+      getIt<AuthRemoteRepository>(),
     ),
   );
 
   getIt.registerFactory<RegisterBloc>(
     () => RegisterBloc(
       registerUseCase: getIt(),
+      uploadImageUsecase: getIt(),
     ),
   );
 }
@@ -60,7 +90,7 @@ _initHomeDependencies() async {
 _initLoginDependencies() async {
   getIt.registerLazySingleton<LoginUseCase>(
     () => LoginUseCase(
-      getIt<AuthLocalRepository>(),
+      getIt<AuthRemoteRepository>(),
     ),
   );
 
@@ -69,6 +99,12 @@ _initLoginDependencies() async {
       registerBloc: getIt<RegisterBloc>(),
       homeCubit: getIt<HomeCubit>(),
       loginUseCase: getIt<LoginUseCase>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<UploadImageUsecase>(
+    () => UploadImageUsecase(
+      getIt<AuthRemoteRepository>(),
     ),
   );
 }
