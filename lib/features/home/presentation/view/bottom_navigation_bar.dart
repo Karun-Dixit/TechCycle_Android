@@ -33,12 +33,13 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
     super.initState();
     final cubit = context.read<HomeCubit>();
     cubit.startListeningToAccelerometer(context); // Start accelerometer for shake detection
+    cubit.startListeningToGyroscope(context); // Start gyroscope for tilt detection
   }
 
   @override
   void dispose() {
     final cubit = context.read<HomeCubit>();
-    cubit.stopListeningToAccelerometer(); // Stop accelerometer when disposing
+    cubit.stopListeningToSensors(); // Stop accelerometer and gyroscope
     super.dispose();
   }
 
