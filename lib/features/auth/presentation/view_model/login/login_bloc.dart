@@ -1,6 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Add this import
+import 'package:sprint1/app/di/di.dart';
+import 'package:sprint1/features/home/presentation/bloc/home_bloc.dart';
 import 'package:sprint1/features/home/presentation/view/home_view.dart';
 
 import '../../../../../core/common/snack_bar/my_snackbar.dart';
@@ -45,13 +48,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         Navigator.pushReplacement(
           event.context,
           MaterialPageRoute(
-            builder: (context) => BlocProvider.value(
-              value: _homeCubit,
-              child: event.destination,
+            builder: (context) => MultiBlocProvider(
+              providers: [
+                BlocProvider.value(value: _homeCubit), // Provide HomeCubit
+                BlocProvider.value(
+                  value: getIt<HomeBloc>(), // Provide HomeBloc from get_it
+                ),
+              ],
+              child: const DashboardScreen(
+              ),
             ),
           ),
         );
-      },
+      },  
     );
 
     on<LogincustomerEvent>(
@@ -73,15 +82,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               color: Colors.red,
             );
           },
-          (token) {
+          (token) async {
             emit(state.copyWith(isLoading: false, isSuccess: true));
+            // Store the token in SharedPreferences
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('token', token);
             add(
               NavigateHomeScreenEvent(
                 context: event.context,
                 destination: const DashboardScreen(),
               ),
             );
-            //_homeCubit.setToken(token);
+            //_homeCubit.setToken(token); // Uncomment or update if needed
           },
         );
       },

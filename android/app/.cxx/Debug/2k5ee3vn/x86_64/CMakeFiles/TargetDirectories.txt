@@ -1,0 +1,2 @@
+C:/Users/karun/Desktop/test/sprint/android/app/.cxx/Debug/2k5ee3vn/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/karun/Desktop/test/sprint/android/app/.cxx/Debug/2k5ee3vn/x86_64/CMakeFiles/rebuild_cache.dir
