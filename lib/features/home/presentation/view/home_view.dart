@@ -194,7 +194,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           hintText: 'Search products...',
                           hintStyle: TextStyle(color: Colors.grey[500]),
                           filled: true,
-                          fillColor: Colors.grey[100],
+                          fillColor: theme.inputDecorationTheme.fillColor ??
+                              (theme.brightness == Brightness.dark
+                                  ? Colors.grey[800]
+                                  : Colors.grey[
+                                      100]), // Gray in dark mode, light gray in light mode
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                             borderSide: BorderSide.none,
@@ -239,13 +243,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               scrollDirection: Axis.horizontal,
                               children: [
                                 _buildCategoryCard(
-                                    Icons.phone_android, "Phones"),
+                                    context, Icons.phone_android, "Phones"),
                                 _buildCategoryCard(
-                                    Icons.videogame_asset, "Consoles"),
+                                    context, Icons.videogame_asset, "Consoles"),
                                 _buildCategoryCard(
-                                    Icons.headphones, "Headphones"),
-                                _buildCategoryCard(Icons.tv, "Monitors"),
-                                _buildCategoryCard(Icons.apps, "All"),
+                                    context, Icons.headphones, "Headphones"),
+                                _buildCategoryCard(
+                                    context, Icons.tv, "Monitors"),
+                                _buildCategoryCard(context, Icons.apps, "All"),
                               ],
                             ),
                           ),
@@ -329,7 +334,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  static Widget _buildCategoryCard(IconData icon, String label) {
+  // Changed to instance method to access context
+  Widget _buildCategoryCard(BuildContext context, IconData icon, String label) {
+    final theme = Theme.of(context); // Access the current theme for the card
     return Padding(
       padding: const EdgeInsets.only(right: 12.0),
       child: GestureDetector(
@@ -339,7 +346,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Container(
           width: 90,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: theme.cardTheme.color ??
+                Colors
+                    .white, // Use theme card color (no white background in dark mode)
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
@@ -356,9 +365,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(height: 6),
               Text(
                 label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
-                  color: Colors.black87,
+                  color: theme.textTheme.bodyMedium?.color ??
+                      Colors.black87, // Use theme text color for dark mode
                   fontWeight: FontWeight.w500,
                 ),
                 textAlign: TextAlign.center,
