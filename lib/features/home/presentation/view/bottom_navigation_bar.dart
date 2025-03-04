@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint1/features/home/presentation/bloc/home_bloc.dart';
 import 'package:sprint1/features/home/presentation/view/home_view.dart';
-import 'package:sprint1/features/home/presentation/view/settings_screen.dart'; // Updated import
+import 'package:sprint1/features/home/presentation/view/settings_screen.dart';
 import 'package:sprint1/features/home/presentation/view/wishlist_screen.dart';
+import 'package:sprint1/features/home/presentation/view_model/home_cubit.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   const CustomBottomNavigationBar({super.key});
 
   @override
-  _CustomBottomNavigationBarState createState() =>
-      _CustomBottomNavigationBarState();
+  _CustomBottomNavigationBarState createState() => _CustomBottomNavigationBarState();
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
@@ -19,7 +19,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   static const List<Widget> _screens = [
     WishlistScreen(),
     DashboardScreen(),
-    SettingsScreen(), // Updated to SettingsScreen
+    SettingsScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -31,33 +31,34 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocProvider.value(
-        value: BlocProvider.of<HomeBloc>(context),
-        child: _screens[_selectedIndex],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Wishlist',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag),
-            label: 'Shop',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings), // Updated icon
-            label: 'Settings', // Updated label
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.grey,
-        onTap: _onItemTapped,
-        backgroundColor: Colors.white,
-        elevation: 8,
-        type: BottomNavigationBarType.fixed,
+    final theme = Theme.of(context); // Access the current theme
+    return BlocProvider.value(
+      value: BlocProvider.of<HomeCubit>(context),
+      child: Scaffold(
+        body: _screens[_selectedIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Wishlist',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag),
+              label: 'Shop',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: theme.primaryColor, // Use theme primary color for selected items
+          unselectedItemColor: theme.textTheme.bodyMedium?.color, // Use theme text color for unselected items
+          onTap: _onItemTapped,
+          backgroundColor: theme.bottomAppBarTheme.color ?? theme.scaffoldBackgroundColor, // Use theme background color
+          elevation: 8,
+          type: BottomNavigationBarType.fixed,
+        ),
       ),
     );
   }
