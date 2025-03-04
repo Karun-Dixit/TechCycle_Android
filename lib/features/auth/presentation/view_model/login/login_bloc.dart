@@ -1,15 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // Add this import
-import 'package:sprint1/app/di/di.dart';
-import 'package:sprint1/features/home/presentation/bloc/home_bloc.dart';
-import 'package:sprint1/features/home/presentation/view/home_view.dart';
-
-import '../../../../../core/common/snack_bar/my_snackbar.dart';
-import '../../../../home/presentation/view_model/home_cubit.dart';
-import '../../../domain/use_case/login_usecase.dart';
-import '../signup/register_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sprint1/core/common/snack_bar/my_snackbar.dart';
+import 'package:sprint1/features/auth/domain/use_case/login_usecase.dart';
+import 'package:sprint1/features/auth/presentation/view_model/signup/register_bloc.dart';
+import 'package:sprint1/features/home/presentation/view_model/home_cubit.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -45,22 +41,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     on<NavigateHomeScreenEvent>(
       (event, emit) {
-        Navigator.pushReplacement(
-          event.context,
-          MaterialPageRoute(
-            builder: (context) => MultiBlocProvider(
-              providers: [
-                BlocProvider.value(value: _homeCubit), // Provide HomeCubit
-                BlocProvider.value(
-                  value: getIt<HomeBloc>(), // Provide HomeBloc from get_it
-                ),
-              ],
-              child: const DashboardScreen(
-              ),
-            ),
-          ),
-        );
-      },  
+        Navigator.pushReplacementNamed(event.context, '/home');
+      },
     );
 
     on<LogincustomerEvent>(
@@ -84,16 +66,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           },
           (token) async {
             emit(state.copyWith(isLoading: false, isSuccess: true));
-            // Store the token in SharedPreferences
             final prefs = await SharedPreferences.getInstance();
             await prefs.setString('token', token);
             add(
               NavigateHomeScreenEvent(
                 context: event.context,
-                destination: const DashboardScreen(),
+                destination:
+                    const SizedBox(), // Placeholder, not used with named route
               ),
             );
-            //_homeCubit.setToken(token); // Uncomment or update if needed
+            //_homeCubit.setToken(token); // Uncomment if needed
           },
         );
       },
