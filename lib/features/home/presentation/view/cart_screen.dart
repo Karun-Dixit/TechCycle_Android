@@ -1,6 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sprint1/app/constants/api_endpoints.dart';
 import 'package:sprint1/features/home/presentation/bloc/home_bloc.dart';
 import 'package:sprint1/features/home/presentation/bloc/home_event.dart';
@@ -11,22 +11,25 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context); // Access the current theme
     return BlocProvider.value(
       value: BlocProvider.of<HomeBloc>(context, listen: false),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: theme.appBarTheme.backgroundColor ??
+              Colors.white, // Use theme app bar background
           elevation: 0,
-          title: const Text(
+          title: Text(
             'Your Cart',
-            style: TextStyle(
-              color: Colors.black,
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: theme.appBarTheme.titleTextStyle?.color ?? Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            icon: Icon(Icons.arrow_back,
+                color: theme.appBarTheme.iconTheme?.color ?? Colors.black),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -48,12 +51,14 @@ class CartScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Total Items:',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                          color: theme.textTheme.bodyMedium?.color ??
+                              Colors
+                                  .black87, // Use theme text color for dark mode
                         ),
                       ),
                       Text(
@@ -68,7 +73,8 @@ class CartScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
                     itemCount: state.cartItems.length,
                     itemBuilder: (context, index) {
                       final product = state.cartItems[index];
@@ -82,12 +88,15 @@ class CartScreen extends StatelessWidget {
                           leading: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: CachedNetworkImage(
-                              imageUrl: "${ApiEndpoints.imageUrl}${product.image!.split('/').last}",
+                              imageUrl:
+                                  "${ApiEndpoints.imageUrl}${product.image!.split('/').last}",
                               width: 60,
                               height: 60,
                               fit: BoxFit.cover,
-                              placeholder: (context, url) => const CircularProgressIndicator(),
-                              errorWidget: (context, url, error) => const Icon(Icons.image_not_supported),
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.image_not_supported),
                             ),
                           ),
                           title: Text(
@@ -100,7 +109,7 @@ class CartScreen extends StatelessWidget {
                           ),
                           subtitle: Text(
                             'Rs. ${product.price.toStringAsFixed(2)}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14,
                               color: Colors.grey,
                             ),
@@ -108,9 +117,13 @@ class CartScreen extends StatelessWidget {
                           trailing: IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () {
-                              context.read<HomeBloc>().add(RemoveFromCart(product));
+                              context
+                                  .read<HomeBloc>()
+                                  .add(RemoveFromCart(product));
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('${product.name} removed from cart')),
+                                SnackBar(
+                                    content: Text(
+                                        '${product.name} removed from cart')),
                               );
                             },
                             tooltip: 'Remove from cart',
@@ -125,7 +138,8 @@ class CartScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Checkout feature coming soon')),
+                        const SnackBar(
+                            content: Text('Checkout feature coming soon')),
                       );
                     },
                     style: ElevatedButton.styleFrom(
