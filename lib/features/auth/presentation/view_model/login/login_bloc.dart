@@ -12,7 +12,7 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final RegisterBloc _registerBloc;
-  final HomeCubit _homeCubit;
+  // final HomeCubit _homeCubit;
   final LoginUseCase _loginUseCase;
 
   LoginBloc({
@@ -20,7 +20,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     required HomeCubit homeCubit,
     required LoginUseCase loginUseCase,
   })  : _registerBloc = registerBloc,
-        _homeCubit = homeCubit,
+        // _homeCubit = homeCubit,
         _loginUseCase = loginUseCase,
         super(LoginState.initial()) {
     on<NavigateRegisterScreenEvent>(

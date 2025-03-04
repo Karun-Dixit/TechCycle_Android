@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint1/features/home/presentation/bloc/home_bloc.dart';
 import 'package:sprint1/features/home/presentation/view/home_view.dart';
-import 'package:sprint1/features/home/presentation/view/profile_screen.dart';
+import 'package:sprint1/features/home/presentation/view/settings_screen.dart'; // Updated import
 import 'package:sprint1/features/home/presentation/view/wishlist_screen.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
@@ -16,11 +16,10 @@ class CustomBottomNavigationBar extends StatefulWidget {
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   int _selectedIndex = 1; // Start on Shop (Dashboard)
 
-  // List of screens without their own Scaffolds
   static const List<Widget> _screens = [
     WishlistScreen(),
     DashboardScreen(),
-    ProfileScreen(),
+    SettingsScreen(), // Updated to SettingsScreen
   ];
 
   void _onItemTapped(int index) {
@@ -48,8 +47,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             label: 'Shop',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.settings), // Updated icon
+            label: 'Settings', // Updated label
           ),
         ],
         currentIndex: _selectedIndex,
