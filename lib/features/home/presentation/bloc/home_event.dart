@@ -19,3 +19,15 @@ class RemoveFromCart extends HomeEvent {
 
   const RemoveFromCart(this.product);
 }
+
+class AddToWishlist extends HomeEvent {
+  final Product product;
+
+  const AddToWishlist(this.product);
+}
+
+class RemoveFromWishlist extends HomeEvent {
+  final Product product;
+
+  const RemoveFromWishlist(this.product);
+}

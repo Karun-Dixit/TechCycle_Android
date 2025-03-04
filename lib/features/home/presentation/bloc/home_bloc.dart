@@ -13,6 +13,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<FetchProducts>(_onFetchProducts);
     on<AddToCart>(_onAddToCart);
     on<RemoveFromCart>(_onRemoveFromCart);
+    on<AddToWishlist>(_onAddToWishlist);
+    on<RemoveFromWishlist>(_onRemoveFromWishlist);
     add(const FetchProducts());
   }
 
@@ -45,8 +47,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _onRemoveFromCart(RemoveFromCart event, Emitter<HomeState> emit) {
     print('Removing ${event.product.name} from cart');
-    final updatedCart = state.cartItems.where((item) => item.id != event.product.id).toList();
+    final updatedCart =
+        state.cartItems.where((item) => item.id != event.product.id).toList();
     emit(state.copyWith(cartItems: updatedCart));
     print('Cart updated. Total items: ${updatedCart.length}');
+  }
+
+  void _onAddToWishlist(AddToWishlist event, Emitter<HomeState> emit) {
+    print('Adding ${event.product.name} to wishlist');
+    final updatedWishlist = List<Product>.from(state.wishlistItems)..add(event.product);
+    emit(state.copyWith(wishlistItems: updatedWishlist));
+    print('Wishlist updated. Total items: ${updatedWishlist.length}');
+  }
+
+  void _onRemoveFromWishlist(RemoveFromWishlist event, Emitter<HomeState> emit) {
+    print('Removing ${event.product.name} from wishlist');
+    final updatedWishlist =
+        state.wishlistItems.where((item) => item.id != event.product.id).toList();
+    emit(state.copyWith(wishlistItems: updatedWishlist));
+    print('Wishlist updated. Total items: ${updatedWishlist.length}');
   }
 }
