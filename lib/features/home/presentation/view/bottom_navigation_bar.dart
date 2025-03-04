@@ -29,6 +29,20 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    final cubit = context.read<HomeCubit>();
+    cubit.startListeningToAccelerometer(context); // Start accelerometer for shake detection
+  }
+
+  @override
+  void dispose() {
+    final cubit = context.read<HomeCubit>();
+    cubit.stopListeningToAccelerometer(); // Stop accelerometer when disposing
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context); // Access the current theme
     return BlocProvider.value(
