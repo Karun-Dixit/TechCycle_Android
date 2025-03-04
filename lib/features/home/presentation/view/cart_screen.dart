@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sprint1/app/constants/api_endpoints.dart';
-import 'package:sprint1/features/home/data/model/product.dart';
 import 'package:sprint1/features/home/presentation/bloc/home_bloc.dart';
 import 'package:sprint1/features/home/presentation/bloc/home_event.dart';
 import 'package:sprint1/features/home/presentation/bloc/home_state.dart';

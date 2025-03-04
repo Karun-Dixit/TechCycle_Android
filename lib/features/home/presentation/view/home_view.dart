@@ -7,7 +7,6 @@ import 'package:sprint1/features/home/presentation/bloc/home_bloc.dart';
 import 'package:sprint1/features/home/presentation/bloc/home_event.dart';
 import 'package:sprint1/features/home/presentation/bloc/home_state.dart';
 import 'package:sprint1/features/home/presentation/widget/product_card.dart';
-
 import 'cart_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -22,15 +21,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: BlocProvider.of<HomeBloc>(context, listen: false),
-      child: Builder(
-        builder: (context) {
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-              elevation: 0,
-              title: const Text(
+    return Column(
+      children: [
+        Container(
+          color: Colors.white,
+          padding: const EdgeInsets.fromLTRB(16, 40, 16, 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
                 'TechCycle',
                 style: TextStyle(
                   color: Colors.black,
@@ -38,287 +37,270 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              actions: [
-                BlocBuilder<HomeBloc, HomeState>(
-                  builder: (context, state) {
-                    print('Cart items in Dashboard: ${state.cartItems.length}');
-                    return Stack(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.shopping_cart,
-                              color: Colors.black),
-                          onPressed: () {
-                            final homeBloc = BlocProvider.of<HomeBloc>(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BlocProvider.value(
-                                  value: homeBloc,
-                                  child: const CartScreen(),
-                                ),
-                              ),
-                            );
-                          },
-                          tooltip: 'View Cart',
-                        ),
-                        if (state.cartItems.isNotEmpty)
-                          Positioned(
-                            right: 8,
-                            top: 8,
-                            child: Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
-                              ),
-                              constraints: const BoxConstraints(
-                                minWidth: 20,
-                                minHeight: 20,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  '${state.cartItems.length}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+              BlocBuilder<HomeBloc, HomeState>(
+                builder: (context, state) {
+                  print('Cart items in Dashboard: ${state.cartItems.length}');
+                  return Stack(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.shopping_cart, color: Colors.black),
+                        onPressed: () {
+                          final homeBloc = BlocProvider.of<HomeBloc>(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BlocProvider.value(
+                                value: homeBloc,
+                                child: const CartScreen(),
                               ),
                             ),
-                          ),
-                      ],
-                    );
-                  },
-                ),
-              ],
-            ),
-            body: BlocBuilder<HomeBloc, HomeState>(
-              builder: (context, state) {
-                print(
-                    'Dashboard has ${state.products.length} products, loading=${state.isLoading}, error=${state.errorMessage}');
-
-                final filteredProducts = _searchQuery.isEmpty
-                    ? state.products
-                    : state.products
-                        .where((product) => product.name
-                            .toLowerCase()
-                            .contains(_searchQuery.toLowerCase()))
-                        .toList();
-
-                return CustomScrollView(
-                  slivers: [
-                    // Revert to static banner
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 10.0),
-                        child: Container(
-                          height: 150,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFFDFF5E2), Color(0xFFFBF8CC)],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.3),
-                                blurRadius: 8,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Text(
-                                        "Best Deals\non Laptops",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 22,
-                                          color: Colors.black87,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      ElevatedButton(
-                                        onPressed: () {},
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.green,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                        ),
-                                        child: const Text(
-                                          'Shop Now',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Image.asset(
-                                'assets/images/laptop.png',
-                                height: 100,
-                                fit: BoxFit.contain,
-                              ),
-                              const SizedBox(width: 16),
-                            ],
-                          ),
-                        ),
+                          );
+                        },
+                        tooltip: 'View Cart',
                       ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 10.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            prefixIcon:
-                                const Icon(Icons.search, color: Colors.grey),
-                            hintText: 'Search products...',
-                            hintStyle: TextStyle(color: Colors.grey[500]),
-                            filled: true,
-                            fillColor: Colors.grey[100],
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                              borderSide: BorderSide.none,
+                      if (state.cartItems.isNotEmpty)
+                        Positioned(
+                          right: 8,
+                          top: 8,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                              borderSide: const BorderSide(
-                                  color: Colors.green, width: 1.5),
+                            constraints: const BoxConstraints(
+                              minWidth: 20,
+                              minHeight: 20,
                             ),
-                            contentPadding:
-                                const EdgeInsets.symmetric(vertical: 12.0),
+                            child: Center(
+                              child: Text(
+                                '${state.cartItems.length}',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
-                          onChanged: (value) {
-                            setState(() {
-                              _searchQuery = value;
-                            });
-                          },
                         ),
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              print(
+                  'Dashboard has ${state.products.length} products, loading=${state.isLoading}, error=${state.errorMessage}');
+              final filteredProducts = _searchQuery.isEmpty
+                  ? state.products
+                  : state.products
+                      .where((product) => product.name
+                          .toLowerCase()
+                          .contains(_searchQuery.toLowerCase()))
+                      .toList();
+
+              return CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                      child: Container(
+                        height: 150,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFFDFF5E2), Color(0xFFFBF8CC)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Row(
                           children: [
-                            const Text(
-                              "Categories",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      "Best Deals\non Laptops",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        'Shop Now',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              height: 80,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: [
-                                  _buildCategoryCard(
-                                      Icons.phone_android, "Phones"),
-                                  _buildCategoryCard(
-                                      Icons.videogame_asset, "Consoles"),
-                                  _buildCategoryCard(
-                                      Icons.headphones, "Headphones"),
-                                  _buildCategoryCard(Icons.tv, "Monitors"),
-                                  _buildCategoryCard(Icons.apps, "All"),
-                                ],
-                              ),
+                            Image.asset(
+                              'assets/images/laptop.png',
+                              height: 100,
+                              fit: BoxFit.contain,
                             ),
+                            const SizedBox(width: 16),
                           ],
                         ),
                       ),
                     ),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                          hintText: 'Search products...',
+                          hintStyle: TextStyle(color: Colors.grey[500]),
+                          filled: true,
+                          fillColor: Colors.grey[100],
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: const BorderSide(color: Colors.green, width: 1.5),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            _searchQuery = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Categories",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            height: 80,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
                               children: [
-                                const Text(
-                                  "Recent Products",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'Sort/Filter',
-                                    style: TextStyle(color: Colors.green),
-                                  ),
-                                ),
+                                _buildCategoryCard(Icons.phone_android, "Phones"),
+                                _buildCategoryCard(Icons.videogame_asset, "Consoles"),
+                                _buildCategoryCard(Icons.headphones, "Headphones"),
+                                _buildCategoryCard(Icons.tv, "Monitors"),
+                                _buildCategoryCard(Icons.apps, "All"),
                               ],
                             ),
-                            const SizedBox(height: 10),
-                          ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Recent Products",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  'Sort/Filter',
+                                  style: TextStyle(color: Colors.green),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
+                  ),
+                  if (state.isLoading)
+                    const SliverToBoxAdapter(
+                      child: Center(child: CircularProgressIndicator()),
+                    )
+                  else if (state.errorMessage != null)
+                    SliverToBoxAdapter(
+                      child: Center(child: Text(state.errorMessage!)),
+                    )
+                  else if (filteredProducts.isEmpty)
+                    const SliverToBoxAdapter(
+                      child: Center(child: Text('No products found')),
+                    )
+                  else
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      sliver: SliverGrid(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
+                          crossAxisSpacing: 12.0,
+                          mainAxisSpacing: 12.0,
+                          childAspectRatio: 0.75,
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final product = filteredProducts[index];
+                            print('Dashboard product $index: ${product.toJson()}');
+                            return ProductCard(product: product);
+                          },
+                          childCount: filteredProducts.length,
                         ),
                       ),
                     ),
-                    if (state.isLoading)
-                      const SliverToBoxAdapter(
-                        child: Center(child: CircularProgressIndicator()),
-                      )
-                    else if (state.errorMessage != null)
-                      SliverToBoxAdapter(
-                        child: Center(child: Text(state.errorMessage!)),
-                      )
-                    else if (filteredProducts.isEmpty)
-                      const SliverToBoxAdapter(
-                        child: Center(child: Text('No products found')),
-                      )
-                    else
-                      SliverPadding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        sliver: SliverGrid(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount:
-                                MediaQuery.of(context).size.width > 600 ? 4 : 2,
-                            crossAxisSpacing: 12.0,
-                            mainAxisSpacing: 12.0,
-                            childAspectRatio: 0.75,
-                          ),
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              final product = filteredProducts[index];
-                              print(
-                                  'Dashboard product $index: ${product.toJson()}');
-                              return ProductCard(product: product);
-                            },
-                            childCount: filteredProducts.length,
-                          ),
-                        ),
-                      ),
-                  ],
-                );
-              },
-            ),
-          );
-        },
-      ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -420,8 +402,7 @@ class ProductDetailScreen extends StatelessWidget {
                   icon: const Icon(Icons.share, color: Colors.black),
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Share feature coming soon')),
+                      const SnackBar(content: Text('Share feature coming soon')),
                     );
                   },
                 ),
@@ -505,9 +486,7 @@ class ProductDetailScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              product.status.isNotEmpty
-                                  ? product.status
-                                  : 'N/A',
+                              product.status.isNotEmpty ? product.status : 'N/A',
                               style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey,
@@ -546,9 +525,7 @@ class ProductDetailScreen extends StatelessWidget {
                             onPressed: () {
                               context.read<HomeBloc>().add(AddToCart(product));
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content:
-                                        Text('${product.name} added to cart')),
+                                SnackBar(content: Text('${product.name} added to cart')),
                               );
                             },
                             style: ElevatedButton.styleFrom(
@@ -573,15 +550,13 @@ class ProductDetailScreen extends StatelessWidget {
                         Expanded(
                           child: OutlinedButton(
                             onPressed: () {
+                              context.read<HomeBloc>().add(AddToWishlist(product)); // Updated to add to wishlist
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text(
-                                        '${product.name} added to wishlist')),
+                                SnackBar(content: Text('${product.name} added to wishlist')),
                               );
                             },
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(
-                                  color: Colors.green, width: 2),
+                              side: const BorderSide(color: Colors.green, width: 2),
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
