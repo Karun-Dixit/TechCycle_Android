@@ -1,31 +1,38 @@
-import 'package:sprint1/core/network/api_service.dart';
+
+import 'package:sprint1/core/network/connectivity_service.dart';
+import 'package:sprint1/features/home/data/data_source/product_local_data_source.dart';
+import 'package:sprint1/features/home/data/data_source/product_remote_data_source.dart';
 import 'package:sprint1/features/home/data/model/product.dart';
 import 'package:sprint1/features/home/domain/repository/product_repository.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
-  final ApiService apiService;
+  final ProductRemoteDataSource remoteDataSource;
+  final ProductLocalDataSource localDataSource;
+  final ConnectivityService connectivityService;
 
-  ProductRepositoryImpl(this.apiService);
+  ProductRepositoryImpl(
+    this.remoteDataSource,
+    this.localDataSource,
+    this.connectivityService,
+  );
 
   @override
   Future<List<Product>> getProducts() async {
-    try {
-      final List<Product> apiProducts = await apiService.fetchProducts();
-      // Preserve all fields from the API Product model
-      return apiProducts.map((apiProduct) => Product(
-        id: apiProduct.id,
-        name: apiProduct.name,
-        description: apiProduct.description,
-        price: apiProduct.price,
-        quantity: apiProduct.quantity,
-        status: apiProduct.status,
-        image: apiProduct.image,       // Include image
-        imageUrl: apiProduct.imageUrl, // Include imageUrl
-        createdAt: apiProduct.createdAt,
-        updatedAt: apiProduct.updatedAt,
-      )).toList();
-    } catch (e) {
-      throw Exception('Failed to fetch products: $e');
+    final isConnected = await connectivityService.isConnected();
+    if (isConnected) {
+      try {
+        final products = await remoteDataSource.getProducts();
+        await localDataSource.cacheProducts(products); // Cache for offline use
+        return products;
+      } catch (e) {
+        throw Exception('Failed to fetch products from API: $e');
+      }
+    } else {
+      final cachedProducts = await localDataSource.getProducts();
+      if (cachedProducts.isNotEmpty) {
+        return cachedProducts;
+      }
+      throw Exception('No internet connection and no cached data available');
     }
   }
 }

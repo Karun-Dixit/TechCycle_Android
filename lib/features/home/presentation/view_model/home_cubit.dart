@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sensors_plus/sensors_plus.dart'; // For accelerometer and gyroscope
+import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprint1/app/di/di.dart';
 import 'package:sprint1/features/auth/presentation/view/login_view.dart';
 import 'package:sprint1/features/auth/presentation/view_model/login/login_bloc.dart';
-import 'package:sprint1/features/services/gyroscope_sensor_service.dart'; // Import the gyroscope service
+import 'package:sprint1/features/services/gyroscope_sensor_service.dart';
 
 import 'home_state.dart';
 
@@ -17,11 +17,9 @@ class HomeCubit extends Cubit<HomeState> {
     _initializeGyroscope(); // Initialize gyroscope service in constructor
   }
 
-  StreamSubscription<AccelerometerEvent>?
-      _accelSubscription; // Accelerometer subscription, nullable for null safety
+  StreamSubscription<AccelerometerEvent>? _accelSubscription; // Accelerometer subscription, nullable for null safety
   bool _isShaking = false; // Track shake state to prevent multiple triggers
-  late final GyroscopeSensorService
-      _gyroscopeService; // Declare as late, initialize in constructor
+  late final GyroscopeSensorService _gyroscopeService; // Declare as late, initialize in constructor
 
   void onTabTapped(int index) {
     emit(state.copyWith(selectedIndex: index));
@@ -29,7 +27,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   void toggleTheme(bool isDark) async {
     final themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
-    emit(state.copyWith(themeMode: themeMode));
+    emit(state.copyWith(themeMode: themeMode)); // Emit new state with updated theme
     await _saveTheme(isDark); // Persist the choice (await to ensure completion)
   }
 
@@ -38,18 +36,15 @@ class HomeCubit extends Cubit<HomeState> {
     final BuildContext currentContext = context;
     try {
       // Check if accelerometer is available
-      _accelSubscription =
-          accelerometerEvents.listen((AccelerometerEvent event) {
-        double gForce = (event.x.abs() + event.y.abs() + event.z.abs()) /
-            9.81; // Normalize to G-force
+      _accelSubscription = accelerometerEvents.listen((AccelerometerEvent event) {
+        double gForce = (event.x.abs() + event.y.abs() + event.z.abs()) / 9.81; // Normalize to G-force
         if (gForce > 2.7 && !_isShaking) {
           // Threshold for shake (adjust as needed, matches your friend’s 2.7)
           _isShaking = true;
           print('Shake detected, navigating to login screen');
           _navigateToLogin(currentContext); // Navigate to login screen on shake
           Future.delayed(const Duration(milliseconds: 500), () {
-            _isShaking =
-                false; // Reset after 500ms delay, matching your friend’s delay
+            _isShaking = false; // Reset after 500ms delay, matching your friend’s delay
           });
         }
       }, onError: (error) {
@@ -80,8 +75,7 @@ class HomeCubit extends Cubit<HomeState> {
     final BuildContext currentContext = context;
     try {
       // Check if gyroscope is available
-      _gyroscopeService
-          .startListening(); // Start the gyroscope service to detect tilts
+      _gyroscopeService.startListening(); // Start the gyroscope service to detect tilts
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -117,16 +111,14 @@ class HomeCubit extends Cubit<HomeState> {
   // Toggle dark mode on tilt (alternate between light and dark modes)
   void _toggleDarkModeOnTilt(bool _) {
     final currentThemeMode = state.themeMode;
-    final newThemeMode =
-        currentThemeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    final newThemeMode = currentThemeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     toggleTheme(newThemeMode == ThemeMode.dark); // Update theme and persist
     print('Dark mode toggled to: ${newThemeMode.name}'); // Log for debugging
   }
 
   // Initialize gyroscope service
   void _initializeGyroscope() {
-    _gyroscopeService =
-        GyroscopeSensorService(onTiltChanged: _toggleDarkModeOnTilt);
+    _gyroscopeService = GyroscopeSensorService(onTiltChanged: _toggleDarkModeOnTilt);
   }
 
   Future<void> _loadTheme() async {

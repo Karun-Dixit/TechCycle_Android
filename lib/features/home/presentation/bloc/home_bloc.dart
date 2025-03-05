@@ -23,14 +23,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(isLoading: true));
     try {
       final products = await getProducts(NoParams());
-      print('Bloc Products: $products');
       emit(state.copyWith(
         isLoading: false,
         products: products,
         errorMessage: null,
       ));
     } catch (e) {
-      print('Bloc Error: $e');
       emit(state.copyWith(
         isLoading: false,
         errorMessage: e.toString(),

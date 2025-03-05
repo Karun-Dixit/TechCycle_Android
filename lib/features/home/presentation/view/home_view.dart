@@ -7,7 +7,6 @@ import 'package:sprint1/features/home/presentation/bloc/home_bloc.dart';
 import 'package:sprint1/features/home/presentation/bloc/home_event.dart';
 import 'package:sprint1/features/home/presentation/bloc/home_state.dart';
 import 'package:sprint1/features/home/presentation/widget/product_card.dart';
-
 import 'cart_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -22,13 +21,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context); // Access the current theme
+    final theme = Theme.of(context);
     return Column(
       children: [
         // Top App Bar (TechCycle and Cart Icon) - Updated for dark mode
         Container(
-          color: theme.appBarTheme.backgroundColor ??
-              Colors.white, // Use theme app bar background
+          color: theme.appBarTheme.backgroundColor ?? Colors.white,
           padding: const EdgeInsets.fromLTRB(16, 40, 16, 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -36,8 +34,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Text(
                 'TechCycle',
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color:
-                      theme.appBarTheme.titleTextStyle?.color ?? Colors.black,
+                  color: theme.appBarTheme.titleTextStyle?.color ?? Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -49,8 +46,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     children: [
                       IconButton(
                         icon: Icon(Icons.shopping_cart,
-                            color: theme.appBarTheme.iconTheme?.color ??
-                                Colors.black),
+                            color: theme.appBarTheme.iconTheme?.color ?? Colors.black),
                         onPressed: () {
                           final homeBloc = BlocProvider.of<HomeBloc>(context);
                           Navigator.push(
@@ -72,9 +68,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .error, // Use theme error color (red) for badge
+                              color: Theme.of(context).colorScheme.error,
                               shape: BoxShape.circle,
                             ),
                             constraints: const BoxConstraints(
@@ -101,7 +95,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
         Expanded(
-          child: BlocBuilder<HomeBloc, HomeState>(
+          child: BlocConsumer<HomeBloc, HomeState>(
+            listener: (context, state) {
+              if (state.errorMessage != null && state.errorMessage!.contains('No internet')) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('No internet connection')),
+                );
+              }
+            },
             builder: (context, state) {
               print(
                   'Dashboard has ${state.products.length} products, loading=${state.isLoading}, error=${state.errorMessage}');
@@ -159,8 +160,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.green,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(8),
                                         ),
                                       ),
                                       child: const Text(
@@ -189,16 +189,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           horizontal: 16.0, vertical: 10.0),
                       child: TextField(
                         decoration: InputDecoration(
-                          prefixIcon:
-                              const Icon(Icons.search, color: Colors.grey),
+                          prefixIcon: const Icon(Icons.search, color: Colors.grey),
                           hintText: 'Search products...',
                           hintStyle: TextStyle(color: Colors.grey[500]),
                           filled: true,
                           fillColor: theme.inputDecorationTheme.fillColor ??
                               (theme.brightness == Brightness.dark
                                   ? Colors.grey[800]
-                                  : Colors.grey[
-                                      100]), // Gray in dark mode, light gray in light mode
+                                  : Colors.grey[100]),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                             borderSide: BorderSide.none,
@@ -208,8 +206,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             borderSide: const BorderSide(
                                 color: Colors.green, width: 1.5),
                           ),
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 12.0),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
                         ),
                         onChanged: (value) {
                           setState(() {
@@ -231,9 +228,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: theme.textTheme.bodyLarge?.color ??
-                                  Colors
-                                      .black87, // Use theme text color for dark mode
+                              color: theme.textTheme.bodyLarge?.color ?? Colors.black87,
                             ),
                           ),
                           const SizedBox(height: 10),
@@ -272,9 +267,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: theme.textTheme.bodyLarge?.color ??
-                                      Colors
-                                          .black87, // Use theme text color for dark mode
+                                  color: theme.textTheme.bodyLarge?.color ?? Colors.black87,
                                 ),
                               ),
                               TextButton(
@@ -308,8 +301,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       sliver: SliverGrid(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount:
-                              MediaQuery.of(context).size.width > 600 ? 4 : 2,
+                          crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
                           crossAxisSpacing: 12.0,
                           mainAxisSpacing: 12.0,
                           childAspectRatio: 0.75,
@@ -317,8 +309,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         delegate: SliverChildBuilderDelegate(
                           (context, index) {
                             final product = filteredProducts[index];
-                            print(
-                                'Dashboard product $index: ${product.toJson()}');
+                            print('Dashboard product $index: ${product.toJson()}');
                             return ProductCard(product: product);
                           },
                           childCount: filteredProducts.length,
@@ -334,9 +325,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // Changed to instance method to access context
   Widget _buildCategoryCard(BuildContext context, IconData icon, String label) {
-    final theme = Theme.of(context); // Access the current theme for the card
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(right: 12.0),
       child: GestureDetector(
@@ -346,9 +336,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Container(
           width: 90,
           decoration: BoxDecoration(
-            color: theme.cardTheme.color ??
-                Colors
-                    .white, // Use theme card color (no white background in dark mode)
+            color: theme.cardTheme.color ?? Colors.white,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
@@ -367,8 +355,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 label,
                 style: TextStyle(
                   fontSize: 14,
-                  color: theme.textTheme.bodyMedium?.color ??
-                      Colors.black87, // Use theme text color for dark mode
+                  color: theme.textTheme.bodyMedium?.color ?? Colors.black87,
                   fontWeight: FontWeight.w500,
                 ),
                 textAlign: TextAlign.center,
@@ -418,11 +405,8 @@ class ProductDetailScreen extends StatelessWidget {
                             imageUrl: imageUrl,
                             fit: BoxFit.contain,
                             height: 300,
-                            placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator()),
-                            errorWidget: (context, url, error) => const Icon(
-                                Icons.image_not_supported,
-                                size: 100),
+                            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) => const Icon(Icons.image_not_supported, size: 100),
                           )
                         : const Icon(Icons.image_not_supported, size: 100),
                   ),
@@ -437,8 +421,7 @@ class ProductDetailScreen extends StatelessWidget {
                   icon: const Icon(Icons.share, color: Colors.black),
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Share feature coming soon')),
+                      const SnackBar(content: Text('Share feature coming soon')),
                     );
                   },
                 ),
@@ -522,9 +505,7 @@ class ProductDetailScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              product.status.isNotEmpty
-                                  ? product.status
-                                  : 'N/A',
+                              product.status.isNotEmpty ? product.status : 'N/A',
                               style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey,
@@ -563,9 +544,7 @@ class ProductDetailScreen extends StatelessWidget {
                             onPressed: () {
                               context.read<HomeBloc>().add(AddToCart(product));
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content:
-                                        Text('${product.name} added to cart')),
+                                SnackBar(content: Text('${product.name} added to cart')),
                               );
                             },
                             style: ElevatedButton.styleFrom(
@@ -590,17 +569,13 @@ class ProductDetailScreen extends StatelessWidget {
                         Expanded(
                           child: OutlinedButton(
                             onPressed: () {
-                              context.read<HomeBloc>().add(AddToWishlist(
-                                  product)); // Updated to add to wishlist
+                              context.read<HomeBloc>().add(AddToWishlist(product));
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text(
-                                        '${product.name} added to wishlist')),
+                                SnackBar(content: Text('${product.name} added to wishlist')),
                               );
                             },
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(
-                                  color: Colors.green, width: 2),
+                              side: const BorderSide(color: Colors.green, width: 2),
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
