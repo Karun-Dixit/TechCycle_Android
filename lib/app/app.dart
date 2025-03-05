@@ -1,12 +1,13 @@
+// lib/app/app.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint1/app/di/di.dart';
-import 'package:sprint1/features/auth/presentation/view/login_view.dart';
 import 'package:sprint1/features/auth/presentation/view_model/login/login_bloc.dart';
 import 'package:sprint1/features/home/presentation/bloc/home_bloc.dart';
 import 'package:sprint1/features/home/presentation/view/bottom_navigation_bar.dart';
 import 'package:sprint1/features/home/presentation/view_model/home_cubit.dart';
 import 'package:sprint1/features/home/presentation/view_model/home_state.dart';
+import 'package:sprint1/features/splash/presentation/view/splash_view.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -48,7 +49,6 @@ class App extends StatelessWidget {
                 color: Colors.white,
               ),
               textTheme: const TextTheme(
-                // Removed 'const' to allow Colors.grey[300]
                 bodyLarge: TextStyle(
                   color: Colors.black87,
                   fontSize: 16,
@@ -83,7 +83,6 @@ class App extends StatelessWidget {
                 color: Colors.grey[800],
               ),
               textTheme: TextTheme(
-                // Removed 'const' to allow Colors.grey[300]
                 bodyLarge: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -97,7 +96,7 @@ class App extends StatelessWidget {
               ),
             ),
             themeMode: state.themeMode,
-            home: LoginView(),
+            home: const SplashScreenView(), // Starts with SplashScreenView
             routes: {
               '/home': (context) => const CustomBottomNavigationBar(),
             },
