@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprint1/app/di/di.dart';
 import 'package:sprint1/features/auth/presentation/view/login_view.dart';
 import 'package:sprint1/features/auth/presentation/view_model/login/login_bloc.dart';
-import 'package:sprint1/features/services/gyroscope_sensor_service.dart';
+import 'package:sprint1/features/services/gyroscope_sensor_service.dart'; // Import the gyroscope service
 
 import 'home_state.dart';
 

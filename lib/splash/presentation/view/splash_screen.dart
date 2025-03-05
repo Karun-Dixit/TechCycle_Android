@@ -10,48 +10,19 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _fadeAnimation;
-
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize animation controller (3 seconds duration, matching the delay)
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 3),
-    );
-
-    // Scale animation (from 0.5 to 1.0)
-    _scaleAnimation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    );
-
-    // Fade animation (from 0.0 to 1.0)
-    _fadeAnimation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeIn,
-    );
-
-    // Start the animation
-    _controller.forward();
-
-    // Navigate to Onboarding Screen after 3 seconds
+    // Navigate to Onboarding Screen after 3 seconds, ensuring context is valid
     Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const OnboardingScreen()),
-      );
+      if (mounted) { // Check if widget is still mounted
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+        );
+      }
     });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -59,13 +30,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: ScaleTransition(
-          scale: _scaleAnimation,
-          child: FadeTransition(
-            opacity: _fadeAnimation,
-            child: Image.asset('assets/images/logo.png'), // Animated logo for Splash Screen
-          ),
-        ),
+        child: Image.asset('assets/images/logo.png'), // Logo for Splash Screen
       ),
     );
   }

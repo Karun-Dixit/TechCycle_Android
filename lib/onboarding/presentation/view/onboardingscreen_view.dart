@@ -21,14 +21,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _navigateToLogin() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => BlocProvider.value(
-          value: getIt<LoginBloc>(),
-          child: LoginView(),
+    if (mounted) { // Check if widget is still mounted
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: getIt<LoginBloc>(),
+            child: LoginView(),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   @override
@@ -61,7 +64,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           });
         },
         children: [
-          _buildPage(
+           _buildPage(
             image: 'assets/images/logo.png',
             title: 'Welcome to TechCycle',
             description: 'Discover the latest electronics for your tech needs.',
