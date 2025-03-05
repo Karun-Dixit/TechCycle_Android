@@ -21,7 +21,8 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
   }
 
   void _navigateToLogin() {
-    Navigator.of(context).pushReplacement( // Changed from push to pushReplacement
+    Navigator.of(context).pushReplacement(
+      // Changed from push to pushReplacement
       MaterialPageRoute(
         builder: (context) => BlocProvider.value(
           value: getIt<LoginBloc>(),
@@ -63,18 +64,20 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
         children: [
           _buildPage(
             image: 'assets/images/logo.png',
-            title: 'Welcome to SoundSage',
-            description: 'Find your perfect instrument, play and learn',
+            title: 'Welcome to TechCycle',
+            description:
+                'Discover the best in electronics, tailored just for you.',
           ),
           _buildPage(
-            image: 'assets/images/covdrum.jpg',
+            image: 'assets/images/buysell.png',
             title: 'Listen Anywhere',
-            description: 'Stream music anytime, anywhere without limits.',
+            description:
+                'Buy cutting-edge gadgets or sell your tech effortlessly.',
           ),
           _buildPage(
-            image: 'assets/images/first.png',
+            image: 'assets/images/payment.png',
             title: 'Get Started Now!',
-            description: 'Enjoy unlimited music and playlists just for you.',
+            description: 'Enjoy quick, safe payments for all your electronics.',
           ),
         ],
       ),
