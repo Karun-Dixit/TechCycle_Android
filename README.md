@@ -1,16 +1,3 @@
-# sprint1
+![image](https://github.com/user-attachments/assets/987ac0ad-8268-4f8e-8b5c-0669ca5040ee)
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+TechCycle is a modern e-commerce application designed for buying and selling second-hand electronics. Built using Flutter with Clean Architecture, MVVM, and BLoC for state management, the app ensures a seamless and efficient user experience. Users can browse products retrieved from an API, add items to their cart or wishlist, and complete transactions securely. TechCycle focuses on sustainability by promoting the reuse of electronics while providing a structured and trustworthy marketplace with future enhancements
